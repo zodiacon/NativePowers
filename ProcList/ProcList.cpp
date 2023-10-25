@@ -45,10 +45,10 @@ void EnumProcesses() {
 	auto p = (SYSTEM_PROCESS_INFORMATION*)buffer.get();
 
 	for (;;) {
-		printf("PID: %6u PPID: %6u T: %4u H: %6u CPU Time: %ws Created: %ws Name: %wZ\n",
+		printf("PID: %6u PPID: %6u T: %4u PT: %4u H: %6u CPU Time: %ws Created: %ws Name: %wZ\n\r",
 			HandleToULong(p->UniqueProcessId),
 			HandleToULong(p->InheritedFromUniqueProcessId),
-			p->NumberOfThreads, p->HandleCount,
+			p->NumberOfThreads, p->NumberOfThreadsHighWatermark, p->HandleCount,
 			TimeSpanToString(p->UserTime.QuadPart + p->KernelTime.QuadPart).c_str(),
 			TimeToString(p->CreateTime).c_str(), &p->ImageName);
 		if (p->NextEntryOffset == 0)
